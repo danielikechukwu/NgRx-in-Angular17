@@ -1,0 +1,59 @@
+<div class="card">
+
+
+  <h4 style="margin-left: 3%;"><i>List Component</i></h4>
+
+  <div class="card-header">
+    {{pageTitle}}
+  </div>
+
+  @if(products){
+  <div class="card-body">
+    <div class="list-group">
+
+      @for (product of products; track product.id){
+      <button class="list-group-item list-group-item-action rounded-0"
+        [ngClass]="{'active': product?.id === selectedProduct?.id}" (click)="productSelected(product)">{{
+        product.productName }}
+
+        @if(displayCode){
+          <ng-container>
+            ({{ product.productCode }})
+          </ng-container>
+        }
+      </button>
+      }
+
+      @empty {
+        <button class="list-group-item list-group-item-action rounded-0">
+        <h4>No Product available.</h4>
+      </button>
+      }
+
+    </div>
+  </div>
+  }
+
+
+  <div class="card-footer">
+    <div class="row">
+      <div class="form-check col-md-7">
+        <label>
+          <input class="form-check-input" type="checkbox" (change)="checkChanged()" [checked]="displayCode">
+          Display Product Code
+        </label>
+      </div>
+      <div class="col-md-4 text-right">
+        <button class="btn btn-primary" (click)="newProduct()">
+          Add
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if(errorMessage){
+<div class="alert alert-danger">
+  Error: {{ errorMessage }}
+</div>
+}
