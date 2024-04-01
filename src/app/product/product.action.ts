@@ -7,13 +7,13 @@ export const toggleProductCode = createAction(
 
 export const setCurrentProduct = createAction(
   '[Product List Component] Set current product',
-  props<{ product: Product}>()
+  props<{ product: Product }>()
+);
+
+export const clearCurrentProduct = createAction(
+  '[Product Edit Component] Clear current product'
 );
 
 export const initCurrentProduct = createAction(
-  '[Product List Component] Initialize current product',
-  props<{product: Product}>()
-
+  '[Product List Component] Initialize current product'
 );
-
-

@@ -37,11 +37,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
-
   ngOnInit(): void {
-    
-     //Previous working code before implementing NGRX.
-     //To check the selected product ID if they are same and make the button active.
+    //Previous working code before implementing NGRX.
+    //To check the selected product ID if they are same and make the button active.
 
     // this.sub = this.productService.selectedProductChanges$.subscribe(
     //   (currentProduct) => {
@@ -49,46 +47,45 @@ export class ProductListComponent implements OnInit, OnDestroy {
     //   }
     // );
 
-    this.sub = this.store.select(getCurrentProduct).subscribe(
-      (value: Product | null) => {
-        if(value){
-          this.selectedProduct = value
+    this.sub = this.store
+      .select(getCurrentProduct)
+      .subscribe((value: Product | null) => {
+        if (value) {
+          this.selectedProduct = value;
         }
-      }
-    )
-
-
+      });
 
     this.sub = this.productService.getProducts().subscribe({
       next: (products: Product[]) => (this.products = products),
       error: (err) => (this.errorMessage = err),
     });
 
-    this.sub = this.store.select(getShowProductCode).subscribe(
-      (value: boolean) => {
-        this.displayCode = value
-      }
-    )
+    this.sub = this.store
+      .select(getShowProductCode)
+      .subscribe((value: boolean) => {
+        this.displayCode = value;
+      });
   }
 
   checkChanged(): void {
-     //Previous working code before implementing NGRX.
-     //To toggle button and display product code.
+    //Previous working code before implementing NGRX.
+    //To toggle button and display product code.
 
     // this.displayCode = !this.displayCode;
 
-    this.store.dispatch(ProductAction.toggleProductCode())
+    this.store.dispatch(ProductAction.toggleProductCode());
   }
 
   newProduct(): void {
-    this.productService.changeSelectedProduct(this.productService.newProduct());
+    //this.productService.changeSelectedProduct(this.productService.newProduct());
+
+    this.store.dispatch(ProductAction.initCurrentProduct());
   }
 
   productSelected(product: Product): void {
-
     //Previous working code before implementing NGRX.
     // this.productService.changeSelectedProduct(product);
 
-    this.store.dispatch(ProductAction.setCurrentProduct({ product }))
+    this.store.dispatch(ProductAction.setCurrentProduct({ product }));
   }
 }
