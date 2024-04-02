@@ -1,13 +1,15 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Product } from '../IProduct';
-import { Subscription } from 'rxjs';
-import { ProductService } from '../product.service';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-// import { State } from '../../state/app.state';
-import { getCurrentProduct, getShowProductCode } from '../product.selector';
+import {
+  getCurrentProduct,
+  getProducts,
+  getShowProductCode,
+} from '../product.selector';
 import * as ProductAction from '../product.action';
 import { State } from '../product.reducer';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-product-list',
@@ -16,76 +18,44 @@ import { State } from '../product.reducer';
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css',
 })
-export class ProductListComponent implements OnInit, OnDestroy {
+
+export class ProductListComponent implements OnInit {
+
   pageTitle = 'Products';
+
   errorMessage!: string;
 
-  displayCode!: boolean;
+  displayCode$!: Observable<boolean>;
 
-  products!: Product[];
+  products$!: Observable<Product[]>;
 
   // Used to highlight the selected product in the list
-  selectedProduct!: Product | null;
-  sub!: Subscription;
+  selectedProduct$!: Observable<Product | null>;
 
-  constructor(
-    private productService: ProductService,
-    private store: Store<State>
-  ) {}
-
-  ngOnDestroy(): void {
-    this.sub.unsubscribe();
-  }
+  constructor(private store: Store<State>) {}
 
   ngOnInit(): void {
-    //Previous working code before implementing NGRX.
-    //To check the selected product ID if they are same and make the button active.
 
-    // this.sub = this.productService.selectedProductChanges$.subscribe(
-    //   (currentProduct) => {
-    //     this.selectedProduct = currentProduct;
-    //   }
-    // );
+    this.selectedProduct$ = this.store.select(getCurrentProduct)
 
-    this.sub = this.store
-      .select(getCurrentProduct)
-      .subscribe((value: Product | null) => {
-        if (value) {
-          this.selectedProduct = value;
-        }
-      });
+    this.store.dispatch(ProductAction.loadProduct());
 
-    this.sub = this.productService.getProducts().subscribe({
-      next: (products: Product[]) => (this.products = products),
-      error: (err) => (this.errorMessage = err),
-    });
+    this.products$ = this.store.select(getProducts)
 
-    this.sub = this.store
-      .select(getShowProductCode)
-      .subscribe((value: boolean) => {
-        this.displayCode = value;
-      });
+    this.displayCode$ = this.store.select(getShowProductCode);
+
   }
 
   checkChanged(): void {
-    //Previous working code before implementing NGRX.
-    //To toggle button and display product code.
-
-    // this.displayCode = !this.displayCode;
-
     this.store.dispatch(ProductAction.toggleProductCode());
   }
 
   newProduct(): void {
-    //this.productService.changeSelectedProduct(this.productService.newProduct());
-
     this.store.dispatch(ProductAction.initCurrentProduct());
   }
 
   productSelected(product: Product): void {
-    //Previous working code before implementing NGRX.
-    // this.productService.changeSelectedProduct(product);
-
     this.store.dispatch(ProductAction.setCurrentProduct({ product }));
   }
+
 }

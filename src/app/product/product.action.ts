@@ -17,3 +17,17 @@ export const clearCurrentProduct = createAction(
 export const initCurrentProduct = createAction(
   '[Product List Component] Initialize current product'
 );
+
+//Asynchronously loading a product from the Server.
+
+export const loadProduct = createAction('[Product] load product');
+
+export const loadProductSuccess = createAction(
+  '[Product] load product Success',
+  props<{ product: Product[] }>()
+);
+
+export const loadProductFailure = createAction(
+  '[Product] load product Failure',
+  props<{ error: string }>()
+);

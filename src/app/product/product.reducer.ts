@@ -2,21 +2,24 @@ import { createAction, createReducer, on } from '@ngrx/store';
 import * as ProductReducer from './product.action';
 import { Product } from './IProduct';
 import * as AppState from '../state/app.state';
+import { error } from 'console';
 
 export interface State extends AppState.State {
   product: ProductState;
 }
 
 export interface ProductState {
-  showProductCode: boolean;
-  currentProduct: Product | null;
-  products: Product[];
+  showProductCode: boolean,
+  currentProduct: Product | null,
+  products: Product[],
+  error: string
 }
 
 const initialState: ProductState = {
   showProductCode: true,
   currentProduct: null,
   products: [],
+  error: ''
 };
 
 export const productReducer = createReducer<ProductState>(
@@ -60,5 +63,23 @@ export const productReducer = createReducer<ProductState>(
         starRating: 0,
       },
     };
+  }),
+
+  on(ProductReducer.loadProductSuccess, (state: ProductState, action): ProductState => {
+
+    return {
+      ...state,
+      products: action.product,
+      error: ''
+    }
+  }),
+
+  on(ProductReducer.loadProductFailure, (state: ProductState, action): ProductState => {
+
+    return {
+      ...state,
+      error: action.error,
+      products: []
+    }
   })
 );

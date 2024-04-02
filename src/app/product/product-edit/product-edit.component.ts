@@ -79,19 +79,10 @@ export class ProductEditComponent {
       description: '',
     });
 
-    // Watch for changes to the currently selected product
-    this.sub = this.productService.selectedProductChanges$.subscribe(
-      (currentProduct: Product | null) => {
-        this.displayProduct(currentProduct);
-      }
-    );
-
     this.sub = this.store
       .select(getCurrentProduct)
       .subscribe((currentProduct: Product | null) => {
-        if (currentProduct) {
-          this.displayProduct(currentProduct);
-        }
+        this.displayProduct(currentProduct);
       });
 
     // Watch for value changes for validation
@@ -150,13 +141,15 @@ export class ProductEditComponent {
     if (product && product.id) {
       if (confirm(`Really delete the product: ${product.productName}?`)) {
         this.productService.deleteProduct(product.id).subscribe({
-          next: () => this.productService.changeSelectedProduct(null),
+          next: () => {
+            this.store.dispatch(ProductAction.clearCurrentProduct());
+          },
           error: (err) => (this.errorMessage = err),
         });
       }
     } else {
       // No need to delete, it was never saved
-      this.productService.changeSelectedProduct(null);
+      this.store.dispatch(ProductAction.clearCurrentProduct());
     }
   }
 
@@ -176,7 +169,10 @@ export class ProductEditComponent {
         } else {
           this.productService.updateProduct(product).subscribe({
             next: (p) => this.productService.changeSelectedProduct(p),
-            error: (err) => (this.errorMessage = err),
+            error: (error) => {
+              console.error(error);
+            },
+            // error: (err) => (this.errorMessage = err),
           });
         }
       }

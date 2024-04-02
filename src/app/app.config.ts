@@ -13,16 +13,17 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { metaReducers, reducers } from './reducers';
+import { provideEffects } from '@ngrx/effects';
+import { AppEffects } from './app.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideClientHydration(),
     provideHttpClient(),
-    importProvidersFrom(
-      HttpClientInMemoryWebApiModule.forRoot(ProductDatabaseService)
-    ),
+    importProvidersFrom(HttpClientInMemoryWebApiModule.forRoot(ProductDatabaseService)),
     provideStore(reducers, { metaReducers }),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-  ],
+    provideEffects([AppEffects])
+],
 };
