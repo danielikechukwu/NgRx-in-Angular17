@@ -46,3 +46,19 @@ export const updateProductFailure = createAction(
   '[Product Edit] Update Product Failure',
   props<{ error: string }>()
 );
+
+//Asychronously creating a product in the Server.
+export const createProduct = createAction(
+  '[Product Edit] Create Product',
+  props<{ product: Product }>()
+);
+
+export const createProductSuccess = createAction(
+  '[Product Edit] Creater',
+  props<{ product: Product }>()
+);
+
+export const createProductFailure = createAction(
+  '[Product Edit] Create Product Failure',
+  props<{ error: string }>()
+);

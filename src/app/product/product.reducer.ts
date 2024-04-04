@@ -84,21 +84,48 @@ export const productReducer = createReducer<ProductState>(
   on(
     ProductReducer.updateProductSuccess,
     (state: ProductState, action): ProductState => {
-      const updateProduct: Product[] = state.products.map(item => action.product.id === item.id ? action.product : item);
+      const updateProduct: Product[] = state.products.map((item) =>
+        action.product.id === item.id ? action.product : item
+      );
 
       return {
         ...state,
         products: updateProduct,
         currentProductId: action.product.id,
         error: '',
-      }
+      };
     }
   ),
 
-  on(ProductReducer.updateProductFailure, (state: ProductState, action): ProductState => {
-    return {
-      ...state,
-      error: action.error
+  on(
+    ProductReducer.updateProductFailure,
+    (state: ProductState, action): ProductState => {
+      return {
+        ...state,
+        error: action.error,
+      };
     }
-  })
+  ),
+
+  on(
+    ProductReducer.createProductSuccess,
+    (state: ProductState, action): ProductState => {
+      const createProduct = [...state.products, action.product];
+      return {
+        ...state,
+        products: createProduct,
+        error: '',
+      };
+    }
+  ),
+
+  on(
+    ProductReducer.createProductFailure,
+    (state: ProductState, action): ProductState => {
+      return {
+        ...state,
+        error: action.error,
+      };
+    }
+  )
 );

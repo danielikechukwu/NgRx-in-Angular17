@@ -47,4 +47,18 @@ export class AppEffects {
       )
     )
   );
+
+  createProduct$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProductAction.createProduct),
+      concatMap((action) =>
+        this.productService.createProduct(action.product).pipe(
+          map((product) => ProductAction.createProductSuccess({ product })),
+          catchError((error) =>
+            of(ProductAction.createProductFailure({ error }))
+          )
+        )
+      )
+    )
+  );
 }
