@@ -7,7 +7,7 @@ export const toggleProductCode = createAction(
 
 export const setCurrentProduct = createAction(
   '[Product List Component] Set current product',
-  props<{ product: Product }>()
+  props<{ currentProductId: number }>()
 );
 
 export const clearCurrentProduct = createAction(
@@ -19,7 +19,6 @@ export const initCurrentProduct = createAction(
 );
 
 //Asynchronously loading a product from the Server.
-
 export const loadProduct = createAction('[Product] load product');
 
 export const loadProductSuccess = createAction(
@@ -29,5 +28,21 @@ export const loadProductSuccess = createAction(
 
 export const loadProductFailure = createAction(
   '[Product] load product Failure',
+  props<{ error: string }>()
+);
+
+//Asynchronously updating a product from the Server.
+export const updateProduct = createAction(
+  '[Product Edit] Update Product',
+  props<{ product: Product }>()
+);
+
+export const updateProductSuccess = createAction(
+  '[Product Edit] Update Product Success',
+  props<{ product: Product }>()
+);
+
+export const updateProductFailure = createAction(
+  '[Product Edit] Update Product Failure',
   props<{ error: string }>()
 );

@@ -166,14 +166,9 @@ export class ProductEditComponent {
             next: (p) => this.productService.changeSelectedProduct(p),
             error: (err) => (this.errorMessage = err),
           });
-        } else {
-          this.productService.updateProduct(product).subscribe({
-            next: (p) => this.productService.changeSelectedProduct(p),
-            error: (error) => {
-              console.error(error);
-            },
-            // error: (err) => (this.errorMessage = err),
-          });
+        } 
+        else {
+          this.store.dispatch(ProductAction.updateProduct({product}));
         }
       }
     }
