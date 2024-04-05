@@ -127,5 +127,20 @@ export const productReducer = createReducer<ProductState>(
         error: action.error,
       };
     }
-  )
+  ),
+
+  on(ProductReducer.deleteProductSuccess, (state: ProductState): ProductState => {
+    return {
+      ...state,
+      currentProductId: null,
+    }
+  }),
+
+  on(ProductReducer.deleteProductFailure, (state: ProductState, action): ProductState => {
+    return {
+      ...state,
+      error: action.error
+    }
+  })
+  
 );

@@ -62,3 +62,18 @@ export const createProductFailure = createAction(
   '[Product Edit] Create Product Failure',
   props<{ error: string }>()
 );
+
+//Asynchronously deleting a product in the Server
+export const deleteProduct = createAction(
+  '[Product Edit] Delete Product',
+  props<{ id: number }>()
+);
+
+export const deleteProductSuccess = createAction(
+  '[Product Edit] Delete Product Success'
+);
+
+export const deleteProductFailure = createAction(
+  '[Product Edit] Delete Product Failure',
+  props<{ error: string }>()
+);

@@ -140,16 +140,19 @@ export class ProductEditComponent {
   deleteProduct(product: Product): void {
     if (product && product.id) {
       if (confirm(`Really delete the product: ${product.productName}?`)) {
-        this.productService.deleteProduct(product.id).subscribe({
-          next: () => {
-            this.store.dispatch(ProductAction.clearCurrentProduct());
-          },
-          error: (err) => (this.errorMessage = err),
-        });
+        // this.productService.deleteProduct(product.id).subscribe({
+        //   next: () => {
+        //     this.store.dispatch(ProductAction.clearCurrentProduct());
+        //   },
+        //   error: (err) => (this.errorMessage = err),
+        // });
+
+        this.store.dispatch(ProductAction.deleteProduct({id: product.id}))
+        
       }
     } else {
       // No need to delete, it was never saved
-      this.store.dispatch(ProductAction.clearCurrentProduct());
+      //this.store.dispatch(ProductAction.clearCurrentProduct());
     }
   }
 
