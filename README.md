@@ -45,9 +45,6 @@ After we fill out the form and click on the Save button we add the detail to the
 
 If we observe the images above, you will notice that the Cutlass was not added but on the second image it was created.
 
-NB: Delete current product from the angular-in-memory-web-api has not being implemented.
-
-
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
